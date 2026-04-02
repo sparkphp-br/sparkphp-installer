@@ -15,5 +15,9 @@
     "bin": [
         "bin/sparkphp"
     ],
+    "scripts": {
+        "post-install-cmd": ["@php bin/sparkphp path:setup"],
+        "post-update-cmd":  ["@php bin/sparkphp path:setup"]
+    },
     "minimum-stability": "stable"
 }
