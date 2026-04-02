@@ -10,7 +10,7 @@ use Symfony\Component\Console\Application as SymfonyApplication;
 
 class Application
 {
-    public const VERSION = '1.1.3';
+    public const VERSION = '1.1.4';
 
     public function run(): void
     {
