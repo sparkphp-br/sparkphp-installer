@@ -21,6 +21,20 @@ Se preferir configurar manualmente, adicione ao seu `~/.bashrc` ou `~/.zshrc`:
 export PATH="$HOME/.config/composer/vendor/bin:$PATH"
 ```
 
+## Uso
+
+Ao digitar apenas `sparkphp`, um menu interativo é exibido com a versão atual, notificação de atualização disponível e as opções de ação:
+
+```
+  ⚡ SparkPHP Installer  v1.1.2
+
+  ✓ Você está na versão mais recente
+
+ O que deseja fazer? [Criar novo projeto]:
+  [0] Criar novo projeto
+  [1] Sair
+```
+
 ## Comandos
 
 ### `sparkphp new <nome>`
@@ -31,9 +45,17 @@ Cria um novo projeto SparkPHP.
 sparkphp new meu-projeto
 ```
 
+O nome do projeto é normalizado automaticamente: espaços viram hífens e acentos são removidos.
+
+```bash
+sparkphp new "crm acessórios"
+# Nome ajustado para: crm-acessorios
+```
+
 Em modo interativo, o instalador pergunta:
 
 ```
+Nome do projeto:
 Incluir documentação no projeto? [yes]:
 Inicializar repositório Git? [yes]:
 ```
