@@ -43,6 +43,19 @@ class NewCommand extends Command
             }
         }
 
+        $normalized = $this->normalizeName($name);
+
+        if ($normalized !== $name) {
+            $name = $normalized;
+            $io->text("Nome ajustado para: <info>{$name}</info>");
+            $io->newLine();
+        }
+
+        if ($name === '') {
+            $io->error('O nome do projeto resultou em uma string vazia após normalização.');
+            return Command::FAILURE;
+        }
+
         $io->title('SparkPHP Installer');
 
         // PHP version check
@@ -126,6 +139,22 @@ class NewCommand extends Command
         ]);
 
         return Command::SUCCESS;
+    }
+
+    private function normalizeName(string $name): string
+    {
+        // Remove accents via transliteration
+        $name = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $name) ?: $name;
+        // Lowercase
+        $name = strtolower($name);
+        // Replace spaces and underscores with hyphens
+        $name = preg_replace('/[\s_]+/', '-', $name);
+        // Remove any character that isn't alphanumeric or hyphen
+        $name = preg_replace('/[^a-z0-9-]/', '', $name);
+        // Collapse multiple hyphens
+        $name = preg_replace('/-+/', '-', $name);
+
+        return trim($name, '-');
     }
 
     private function removeDir(string $path): void
