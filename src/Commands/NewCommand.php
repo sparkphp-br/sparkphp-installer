@@ -19,7 +19,7 @@ class NewCommand extends Command
         $this
             ->setName('new')
             ->setDescription('Cria um novo projeto SparkPHP')
-            ->addArgument('name', InputArgument::REQUIRED, 'Nome do projeto')
+            ->addArgument('name', InputArgument::OPTIONAL, 'Nome do projeto')
             ->addOption('no-docs', null, InputOption::VALUE_NONE, 'Cria o projeto sem a documentação')
             ->addOption('git',     null, InputOption::VALUE_NONE, 'Inicializa repositório Git após a criação')
             ->addOption('no-git',  null, InputOption::VALUE_NONE, 'Não inicializa repositório Git');
@@ -28,8 +28,20 @@ class NewCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io          = new SymfonyStyle($input, $output);
-        $name        = $input->getArgument('name');
         $interactive = $input->isInteractive();
+        $name        = $input->getArgument('name');
+
+        if (!$name) {
+            if (!$interactive) {
+                $io->error('Informe o nome do projeto: sparkphp new <nome>');
+                return Command::FAILURE;
+            }
+            $name = $io->ask('Nome do projeto');
+            if (!$name) {
+                $io->error('O nome do projeto não pode ser vazio.');
+                return Command::FAILURE;
+            }
+        }
 
         $io->title('SparkPHP Installer');
 

@@ -18,7 +18,6 @@ class Application
         $app->add(new NewCommand());
         $app->add(new SelfUpdateCommand());
         $app->add(new PathSetupCommand());
-        $app->setDefaultCommand('new', false);
 
         $app->run();
     }
