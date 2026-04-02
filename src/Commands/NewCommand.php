@@ -97,6 +97,7 @@ class NewCommand extends Command
         // Remove docs if requested
         if ($noDocs) {
             $this->removeDir("{$name}/docs");
+            $this->removeDir("{$name}/app/views/exemplos");
             $io->text('<comment>Documentação removida.</comment>');
         }
 
