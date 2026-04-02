@@ -13,20 +13,12 @@ Instalador global do [SparkPHP](https://github.com/sparkphp-br/sparkphp) — cri
 composer global require sparkphp-br/installer
 ```
 
-Certifique-se de que o diretório de binários globais do Composer está no seu `PATH`:
+Após a instalação, o installer verifica automaticamente se o diretório de binários do Composer está no seu `PATH` e oferece configurá-lo caso necessário.
+
+Se preferir configurar manualmente, adicione ao seu `~/.bashrc` ou `~/.zshrc`:
 
 ```bash
-# Linux / macOS
 export PATH="$HOME/.config/composer/vendor/bin:$PATH"
-
-# ou, dependendo do ambiente:
-export PATH="$HOME/.composer/vendor/bin:$PATH"
-```
-
-Para descobrir o caminho correto no seu ambiente:
-
-```bash
-composer global config home
 ```
 
 ## Comandos
@@ -78,6 +70,22 @@ sparkphp self-update
 ```
 
 Aliases: `selfupdate`
+
+---
+
+### `sparkphp path:setup`
+
+Verifica se o diretório de binários do Composer está no `PATH` e o configura automaticamente.
+
+```bash
+sparkphp path:setup
+```
+
+Detecta o shell em uso (`bash`, `zsh`, `fish`) e escreve a configuração no arquivo correto. Use `-y` para confirmar sem perguntas:
+
+```bash
+sparkphp path:setup -y
+```
 
 ---
 
