@@ -32,6 +32,18 @@ sparkphp new meu-projeto
 
 Isso cria o diretório `meu-projeto/` com a estrutura completa do SparkPHP e instala as dependências automaticamente via Composer.
 
+Ao rodar o comando, será perguntado se deseja incluir a documentação no projeto:
+
+```
+Incluir documentação no projeto? [yes]:
+```
+
+Para pular a pergunta, use a flag `--no-docs`:
+
+```bash
+sparkphp new meu-projeto --no-docs
+```
+
 ## Requisitos
 
 - PHP >= 8.3
