@@ -1,5 +1,5 @@
 {
-    "name": "sparkphp/installer",
+    "name": "sparkphp-br/installer",
     "description": "Instalador global do SparkPHP",
     "type": "library",
     "license": "MIT",

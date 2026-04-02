@@ -38,7 +38,7 @@ class NewCommand extends Command
         }
 
         $command = sprintf(
-            'composer create-project sparkphp/sparkphp %s',
+            'composer create-project sparkphp-br/sparkphp %s',
             escapeshellarg($name)
         );
 
