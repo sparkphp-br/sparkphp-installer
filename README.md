@@ -26,7 +26,7 @@ export PATH="$HOME/.config/composer/vendor/bin:$PATH"
 Ao digitar apenas `sparkphp`, um menu interativo é exibido com a versão atual, notificação de atualização disponível e as opções de ação:
 
 ```
-  ⚡ SparkPHP Installer  v1.1.2
+  ⚡ SparkPHP Installer  v1.1.3
 
   ✓ Você está na versão mais recente
 
