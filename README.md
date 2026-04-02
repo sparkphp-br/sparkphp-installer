@@ -26,7 +26,7 @@ export PATH="$HOME/.config/composer/vendor/bin:$PATH"
 Ao digitar apenas `sparkphp`, um menu interativo é exibido com a versão atual, notificação de atualização disponível e as opções de ação:
 
 ```
-  ⚡ SparkPHP Installer  v1.1.4
+  ⚡ SparkPHP Installer  v1.1.5
 
   ✓ Você está na versão mais recente
 
@@ -56,8 +56,14 @@ Em modo interativo, o instalador pergunta:
 
 ```
 Nome do projeto:
-Incluir documentação no projeto? [yes]:
-Inicializar repositório Git? [yes]:
+
+ Incluir documentação no projeto? [Sim]:
+  [0] Sim
+  [1] Não
+
+ Inicializar repositório Git? [Sim]:
+  [0] Sim
+  [1] Não
 ```
 
 **Opções disponíveis:**

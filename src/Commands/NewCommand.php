@@ -86,11 +86,11 @@ class NewCommand extends Command
         $noGit   = $input->getOption('no-git');
 
         if (!$noDocs && $interactive) {
-            $noDocs = !$io->confirm('Incluir documentação no projeto?', true);
+            $noDocs = $io->choice('Incluir documentação no projeto?', ['Sim', 'Não'], 'Sim') === 'Não';
         }
 
         if (!$withGit && !$noGit && $interactive && $this->commandExists('git')) {
-            $withGit = $io->confirm('Inicializar repositório Git?', true);
+            $withGit = $io->choice('Inicializar repositório Git?', ['Sim', 'Não'], 'Sim') === 'Sim';
         }
 
         // Create project
