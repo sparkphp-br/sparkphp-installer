@@ -11,55 +11,95 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class NewCommand extends Command
 {
+    private const REQUIRED_PHP = '8.3.0';
+    private const SKELETON     = 'sparkphp-br/sparkphp';
+
     protected function configure(): void
     {
         $this
             ->setName('new')
             ->setDescription('Cria um novo projeto SparkPHP')
             ->addArgument('name', InputArgument::REQUIRED, 'Nome do projeto')
-            ->addOption('no-docs', null, InputOption::VALUE_NONE, 'Cria o projeto sem a documentação');
+            ->addOption('no-docs', null, InputOption::VALUE_NONE, 'Cria o projeto sem a documentação')
+            ->addOption('git',     null, InputOption::VALUE_NONE, 'Inicializa repositório Git após a criação')
+            ->addOption('no-git',  null, InputOption::VALUE_NONE, 'Não inicializa repositório Git');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $io     = new SymfonyStyle($input, $output);
-        $name   = $input->getArgument('name');
-        $noDocs = $input->getOption('no-docs');
-
-        if (!$noDocs && $input->isInteractive()) {
-            $noDocs = !$io->confirm('Incluir documentação no projeto?', true);
-        }
+        $io          = new SymfonyStyle($input, $output);
+        $name        = $input->getArgument('name');
+        $interactive = $input->isInteractive();
 
         $io->title('SparkPHP Installer');
-        $io->text("Criando projeto <info>{$name}</info>...");
-        $io->newLine();
 
+        // PHP version check
+        if (version_compare(PHP_VERSION, self::REQUIRED_PHP, '<')) {
+            $io->error(sprintf(
+                'PHP >= %s é necessário. Versão atual: %s',
+                self::REQUIRED_PHP,
+                PHP_VERSION
+            ));
+            return Command::FAILURE;
+        }
+
+        // Composer check
         if (!$this->commandExists('composer')) {
             $io->error('Composer não encontrado. Instale em https://getcomposer.org');
             return Command::FAILURE;
         }
 
+        // Directory check
         if (is_dir($name)) {
             $io->error("O diretório '{$name}' já existe.");
             return Command::FAILURE;
         }
 
-        $command = sprintf(
-            'composer create-project sparkphp-br/sparkphp %s',
-            escapeshellarg($name)
-        );
+        // Resolve options interactively when flags not provided
+        $noDocs  = $input->getOption('no-docs');
+        $withGit = $input->getOption('git');
+        $noGit   = $input->getOption('no-git');
 
-        passthru($command, $result);
+        if (!$noDocs && $interactive) {
+            $noDocs = !$io->confirm('Incluir documentação no projeto?', true);
+        }
+
+        if (!$withGit && !$noGit && $interactive && $this->commandExists('git')) {
+            $withGit = $io->confirm('Inicializar repositório Git?', true);
+        }
+
+        // Create project
+        $io->text("Criando projeto <info>{$name}</info>...");
+        $io->newLine();
+
+        passthru(
+            sprintf('composer create-project %s %s', self::SKELETON, escapeshellarg($name)),
+            $result
+        );
 
         if ($result !== 0) {
             $io->error('Falha ao criar o projeto.');
             return Command::FAILURE;
         }
 
+        // Remove docs if requested
         if ($noDocs) {
-            $this->removeDir($name . '/docs');
+            $this->removeDir("{$name}/docs");
+            $io->text('<comment>Documentação removida.</comment>');
         }
 
+        // Git init
+        if ($withGit && $this->commandExists('git')) {
+            $io->newLine();
+            $io->text('Inicializando repositório Git...');
+            exec("git -C " . escapeshellarg($name) . " init && git -C " . escapeshellarg($name) . " add -A && git -C " . escapeshellarg($name) . " commit -m 'chore: initial commit'", result_code: $gitResult);
+
+            if ($gitResult === 0) {
+                $io->text('<info>Repositório Git inicializado.</info>');
+            }
+        }
+
+        // Success
         $io->newLine();
         $io->success("Projeto '{$name}' criado com sucesso!");
         $io->listing([

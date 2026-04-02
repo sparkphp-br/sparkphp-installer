@@ -2,16 +2,22 @@
 
 namespace SparkPhp\Installer;
 
-use Symfony\Component\Console\Application as SymfonyApplication;
 use SparkPhp\Installer\Commands\NewCommand;
+use SparkPhp\Installer\Commands\SelfUpdateCommand;
+use Symfony\Component\Console\Application as SymfonyApplication;
 
 class Application
 {
+    public const VERSION = '1.0.0';
+
     public function run(): void
     {
-        $app = new SymfonyApplication('SparkPHP Installer', '1.0.0');
+        $app = new SymfonyApplication('SparkPHP Installer', self::VERSION);
+
         $app->add(new NewCommand());
+        $app->add(new SelfUpdateCommand());
         $app->setDefaultCommand('new', false);
+
         $app->run();
     }
 }
